@@ -1,4 +1,4 @@
-FROM node:6-slim
+FROM node:7-slim
 
 COPY . /ut
 COPY package.json /ut/package.json
