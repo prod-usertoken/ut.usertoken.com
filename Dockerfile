@@ -1,14 +1,14 @@
 FROM node:6-slim
 
-COPY . /starter
-COPY package.json /starter/package.json
-COPY .env.example /starter/.env.example
+COPY . /ut
+COPY package.json /ut/package.json
+COPY .env.example /ut/.env.example
 
-WORKDIR /starter
+WORKDIR /ut
 
 ENV NODE_ENV production
 RUN npm install --production
 
 CMD ["npm","start"]
 
-EXPOSE 8888
+EXPOSE 9000
