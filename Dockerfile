@@ -1,10 +1,10 @@
 FROM node:7-slim
 
-COPY . /ut
-COPY package.json /ut/package.json
-COPY .env.example /ut/.env.example
+COPY . /usertoken
+COPY package.json /usertoken/package.json
+COPY .env.example /usertoken/.env.example
 
-WORKDIR /ut
+WORKDIR /usertoken
 
 ENV NODE_ENV production
 RUN npm install --production
