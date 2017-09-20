@@ -1,4 +1,5 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 const next = require('next')
 const Gun = require('gun')
 require('dotenv').config()
@@ -25,6 +26,8 @@ app.prepare()
   }
   const gun = new Gun(gunOptions)
   server.use(Gun.serve)
+  server.use(bodyParser.json()); // support json encoded bodies
+  server.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
   ///////////////////////////////
   server.get('/gun', (req, res) => {
@@ -38,9 +41,16 @@ app.prepare()
   server.get('favicon', (req, res) => {
     return app.render(req, res, '/favicon', req.query)
   })
+
   server.get('/login/:user', (req, res) => {
     const user = req.params.user;
-    console.log('1.server /login/user : ', user)
+    console.log('1.server GET /login/user : ', user)
+    res.status(200).send('user : ' + JSON.stringify(user));
+  })
+
+  server.post('/login/user', (req, res) => {
+    const user = req.body.userId;
+    console.log('1.server POST /login/user : ', user)
     res.status(200).send('user : ' + JSON.stringify(user));
   })
 
