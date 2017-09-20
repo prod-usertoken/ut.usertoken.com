@@ -20,8 +20,8 @@ const workers = workerFarm(FARM_OPTIONS, require.resolve('./workers/encryptionWo
 exports.genKeys = (req, res) => {
     let key1;
     // for (i = 1; i < 2; i++) {
-      const data = { bits: 2048, workers: 2 };
-      work('genkey', serialize(data));
+      // const data = { bits: 2048, workers: 2 };
+      work('genkey');
     // };
     serverKey.get('serverkeys').get('publickey').val(key => {
       // console.log('1.serverWorker publickey : ', key);
@@ -56,4 +56,4 @@ exports.encrypt = (req, res) => {
 
 const deserialize = (serializedJavascript) => eval('(' + serializedJavascript + ')');
 
-const work = (task, data) => workers(task, data);
+const work = (task) => workers(task);
