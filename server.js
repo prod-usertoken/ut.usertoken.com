@@ -1,6 +1,7 @@
 const express = require('express')
 const next = require('next')
 const Gun = require('gun')
+require('dotenv').config()
 
 const port = parseInt(process.env.PORT, 10) || 9000
 const dev = process.env.NODE_ENV === 'dev'
