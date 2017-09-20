@@ -1,8 +1,9 @@
 const workerFarm = require('worker-farm');
 const serialize = require('serialize-javascript');
 
-const Gun = require('../models/gundb');
-const { gun } = Gun;
+const Gun = require('gun');
+require('gun/lib/path.js');
+const gun = Gun(['http://localhost:3000/gun']);
 
 const FARM_OPTIONS = {
     maxConcurrentWorkers: require('os').cpus().length,
@@ -12,14 +13,24 @@ const FARM_OPTIONS = {
 // Sync everything
 gun.on('out', { get: { '#': { '*': '' } } });
 const serverKey = gun.get('keys');
+const keyIndex = gun.get('keyindex');
 
 const workers = workerFarm(FARM_OPTIONS, require.resolve('./workers/encryptionWorker'))
 
 exports.genKeys = (req, res) => {
-    for (i = 1; i < 2; i++) {
-        work('genkey', { bits: 2048, workers: 2 });
-    };
-    res.status(200).send('genkey');
+    let key1;
+    // for (i = 1; i < 2; i++) {
+      const data = { bits: 2048, workers: 2 };
+      work('genkey', serialize(data));
+    // };
+    serverKey.get('serverkeys').get('publickey').val(key => {
+      // console.log('1.serverWorker publickey : ', key);
+      key1 = key;
+    });
+    keyIndex.get('1').get('publickey').val(key => {
+      console.log('2.serverWorker publickey : ', key === key1);
+    });
+    res.status(200).send('1');
     return
 };
 
@@ -45,4 +56,4 @@ exports.encrypt = (req, res) => {
 
 const deserialize = (serializedJavascript) => eval('(' + serializedJavascript + ')');
 
-const work = (task, data, db) => workers(task, data, db);
+const work = (task, data) => workers(task, data);

@@ -35,6 +35,9 @@ app.prepare()
     return
   })
 
+  server.get('favicon', (req, res) => {
+    return app.render(req, res, '/favicon', req.query)
+  })
   server.get('/login/:user', (req, res) => {
     const user = req.params.user;
     console.log('1.server /login/user : ', user)
