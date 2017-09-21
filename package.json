@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "NODE_ENV=dev node server.js",
     "build": "node_modules/next/dist/bin/next build",
-    "start": "npm run build;NODE_ENV=production node server.js"
+    "monitor": "./node_modules/pm2/bin/pm2 monit",
+    "start": "npm run build;NODE_ENV=production ./node_modules/pm2/bin/pm2 start server.js -i 0 --name usertoken",
+    "stop": "./node_modules/pm2/bin/pm2 stop usertoken;./node_modules/pm2/bin/pm2 kill usertoken"
   },
   "keywords": [],
   "author": "UserToken Admin <admin@usertoken.com> (https://www.usertoken.com)",
@@ -19,6 +21,7 @@
     "gun": "0.8.6",
     "next": "3.2.2",
     "node-forge": "^0.7.1",
+    "pm2": "^2.7.0",
     "react": "15.6.1",
     "react-dom": "15.6.1",
     "react-favicon": "0.0.9",
